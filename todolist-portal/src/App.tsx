@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './App.css';
-import { TodoListItem } from './TodoListItem';
+import { TodoList } from './TodoList';
 
 const initialCards: Card[] = [
   {
@@ -26,7 +26,7 @@ function App() {
       if (card === selectedCard) {
         return {
           ...card,
-          currentStatus: (card.currentStatus == 'PENDING' ? 'DONE' : 'PENDING') as CardStatus,
+          currentStatus: (card.currentStatus === 'PENDING' ? 'DONE' : 'PENDING') as CardStatus,
         };
       }
       return card;
@@ -34,12 +34,7 @@ function App() {
     setCards( newCards );
   };
 
-  return (
-    <ul>
-      <TodoListItem card={cards[0]} toggleCard={toggleCard} />
-      <TodoListItem card={cards[1]} toggleCard={toggleCard} />
-    </ul>
-  );
+  return <TodoList cards={cards} toggleCard={toggleCard} />;
 }
 
 export default App;
