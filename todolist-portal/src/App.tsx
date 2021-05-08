@@ -1,9 +1,50 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
+import { TodoListItem } from './TodoListItem';
 
-type Repo = { name: string};
-type MyState = { isLoading: boolean, repos: Repo[] };
+const initialCards: Card[] = [
+  {
+    id: 1,
+    title: 'Walk the dog',
+    currentStatus: 'PENDING',
+    dueDate: new Date(),
+  },
+  {
+    id: 2,
+    title: 'Write app',
+    description: "Write a complete app",
+    currentStatus: 'DONE',
+    dueDate: new Date(),
+  },
+];
 
+function App() {
+  const [cards, setCards] = useState(initialCards);
+
+  const toggleCard = (selectedCard: Card) => {
+    const newCards = cards.map(card => {
+      if (card === selectedCard) {
+        return {
+          ...card,
+          currentStatus: (card.currentStatus == 'PENDING' ? 'DONE' : 'PENDING') as CardStatus,
+        };
+      }
+      return card;
+    });
+    setCards( newCards );
+  };
+
+  return (
+    <ul>
+      <TodoListItem card={cards[0]} toggleCard={toggleCard} />
+      <TodoListItem card={cards[1]} toggleCard={toggleCard} />
+    </ul>
+  );
+}
+
+export default App;
+
+/*
 class App extends React.Component<{}, MyState> {
   constructor(props: any) {
     super(props);
@@ -25,7 +66,6 @@ class App extends React.Component<{}, MyState> {
     .then(response => response.json())
     .then(result => {
       this.setState({isLoading: true, repos: [result]})
-      result.map(a => console.log(a))
       
     }
       )
@@ -34,17 +74,16 @@ class App extends React.Component<{}, MyState> {
   }
 
   render() {
+    const [todos, setTodos] = useState(initialCards);
+
     return (
       <div className="App">
-        <button onClick={this.fetchData}>Click me</button>
-        <ul>
-          {
-            this.state.repos.map((name, index) => (<h1>{name}</h1>))
-          }
-        </ul>
+        <TodoListItem todo={todos[0]} />
+        <TodoListItem todo={todos[1]} />
       </div>
     )
   };
 }
 
 export default App;
+*/
