@@ -18,8 +18,14 @@ const initialCards: Card[] = [
   },
 ];
 
+const api = "http://localhost:8080/todolist/api/cards";
+
+let dbCards;
+
 function App() {
   const [cards, setCards] = useState(initialCards);
+
+  // dbCards = fetch(api).then(response => response.json()).then((data : Card[]) => data as )
 
   const toggleCard = (selectedCard: Card) => {
     const newCards = cards.map(card => {
@@ -34,7 +40,7 @@ function App() {
     setCards( newCards );
   };
 
-  return <TodoList cards={cards} toggleCard={toggleCard} />;
+  return <TodoList cards={initialCards} toggleCard={toggleCard} />;
 }
 
 export default App;

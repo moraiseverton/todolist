@@ -5,8 +5,6 @@ interface Props {
   toggleCard: ToggleCard;
 }
 
-const api = "http://localhost:8080/todolist/api";
-
 export const TodoListItem: React.FC<Props> = ({ card, toggleCard }) => {
   return (
     <li>
