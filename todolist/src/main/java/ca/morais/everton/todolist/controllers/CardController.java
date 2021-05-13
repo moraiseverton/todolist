@@ -10,6 +10,7 @@ import ca.morais.everton.todolist.repositories.CardQuery;
 import ca.morais.everton.todolist.services.CardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -34,6 +35,7 @@ class CardController {
     private CardService service;
 
     @GetMapping
+    @CrossOrigin(origins = {"http://localhost:8080", "http://localhost:3000"})
     public ListCardsDtoOut listCards() {
         List<Card> cards = service.listAllCards();
         return ListCardsDtoOut.fromDomainList(cards);
@@ -47,11 +49,11 @@ class CardController {
 
     @GetMapping("/search")
     public ListCardsDtoOut search(@RequestParam(required = false, name = "id") Set<Long> ids,
-                                   @RequestParam(required = false) Optional<String> partialTitle,
-                                   @RequestParam(required = false) Optional<String> partialDescription,
-                                   @RequestParam(required = false) Optional<Instant> startDueDate,
-                                   @RequestParam(required = false) Optional<Instant> endDueDate,
-                                   @RequestParam(required = false, name = "status") Set<CardStatus> statuses) {
+                                  @RequestParam(required = false) Optional<String> partialTitle,
+                                  @RequestParam(required = false) Optional<String> partialDescription,
+                                  @RequestParam(required = false) Optional<Instant> startDueDate,
+                                  @RequestParam(required = false) Optional<Instant> endDueDate,
+                                  @RequestParam(required = false, name = "status") Set<CardStatus> statuses) {
         CardQuery cardQuery = CardQuery.create(ids, partialTitle, partialDescription, startDueDate, endDueDate, statuses);
         List<Card> cards = service.searchCards(cardQuery);
         return ListCardsDtoOut.fromDomainList(cards);

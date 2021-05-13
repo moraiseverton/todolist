@@ -1,5 +1,5 @@
 interface Card {
-  id: long;
+  cardId: long;
   title: string;
   description?: string;
   currentStatus: CardStatus;

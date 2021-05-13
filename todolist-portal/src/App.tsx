@@ -1,31 +1,39 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import { TodoList } from './TodoList';
+import axios from 'axios';
 
-const initialCards: Card[] = [
-  {
-    id: 1,
-    title: 'Walk the dog',
-    currentStatus: 'PENDING',
-    dueDate: new Date(),
-  },
-  {
-    id: 2,
-    title: 'Write app',
-    description: "Write a complete app",
-    currentStatus: 'DONE',
-    dueDate: new Date(),
-  },
+const defaultCards: Card[] = [
 ];
 
 const api = "http://localhost:8080/todolist/api/cards";
 
-let dbCards;
-
 function App() {
-  const [cards, setCards] = useState(initialCards);
+  const [cards, setCards]: [Card[], (cards: Card[]) => void] = useState(defaultCards);
+  const [loading, setLoading]: [boolean, (loading: boolean) => void] = useState<boolean>(true);
+  const [error, setError]: [string, (error: string) => void] = useState("");
 
-  // dbCards = fetch(api).then(response => response.json()).then((data : Card[]) => data as )
+  useEffect(() => {
+    axios
+        .get<Card[]>(api, {
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Request-Methods": "POST, GET, PUT, DELETE",
+          },
+          timeout : 1000
+        })
+        .then(response => {
+          console.log(response.data);
+          setCards(response.data);
+          setLoading(false);
+        })
+        .catch(ex => {
+          console.log(ex);
+          setError("An unexpected error has occurred");
+          setLoading(false);
+        });
+    }, []);
 
   const toggleCard = (selectedCard: Card) => {
     const newCards = cards.map(card => {
@@ -40,51 +48,10 @@ function App() {
     setCards( newCards );
   };
 
-  return <TodoList cards={initialCards} toggleCard={toggleCard} />;
+  return (
+    <TodoList cards={defaultCards} toggleCard={toggleCard} />
+    //{ error && <p className="error">{error}</p> }
+    );
 }
 
 export default App;
-
-/*
-class App extends React.Component<{}, MyState> {
-  constructor(props: any) {
-    super(props);
-    this.state = {
-      isLoading: false,
-      repos: []
-    };
-
-    this.fetchData = this.fetchData.bind(this);
-  }
-
-  componentDidMount() {
-    this.fetchData();
-  }
-
-  fetchData() {
-    const url = 'https://api.github.com/users/hacktivist123/repos';
-    fetch(url)
-    .then(response => response.json())
-    .then(result => {
-      this.setState({isLoading: true, repos: [result]})
-      
-    }
-      )
-
-    console.log(this.state)
-  }
-
-  render() {
-    const [todos, setTodos] = useState(initialCards);
-
-    return (
-      <div className="App">
-        <TodoListItem todo={todos[0]} />
-        <TodoListItem todo={todos[1]} />
-      </div>
-    )
-  };
-}
-
-export default App;
-*/
