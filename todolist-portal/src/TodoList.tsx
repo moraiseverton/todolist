@@ -8,10 +8,10 @@ interface Props {
 
 export const TodoList: React.FC<Props> = ({ cards, toggleCard }) => {
   return (
-    <ul>
-      {cards.map(card => (
-        <TodoListItem key={card.id} card={card} toggleCard={toggleCard} />
+    <div className="TodoList">
+    {cards.map(card => (
+        <TodoListItem key={card.cardId} card={card} toggleCard={toggleCard} />
       ))}
-    </ul>
+    </div>
   );
 };
