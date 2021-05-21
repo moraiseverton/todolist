@@ -7,22 +7,17 @@ interface Props {
 
 export const TodoListItem: React.FC<Props> = ({ card, toggleCard }) => {
   return (
-    <li>
-      <label
-        style={{
-          textDecoration:
-            card.dueDate <= new Date() ? "line-through" : undefined,
+    <div style={{
+      textDecoration:
+        card.dueDate <= new Date() ? "line-through" : undefined,
+    }}>
+      <h2>{card.title}</h2>
+      {card.description ?? card.description}
+      <button
+        onClick={() => {
+          toggleCard(card);
         }}
-      >
-        <input
-          type="checkbox"
-          checked={card.currentStatus === "DONE"}
-          onClick={() => {
-            toggleCard(card);
-          }}
-        />{" "}
-        {card.title} {card.description ?? card.description}
-      </label>
-    </li>
+        > Mark as DONE </button>
+    </div>
   );
 };
