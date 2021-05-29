@@ -36,6 +36,8 @@ class App extends React.Component<{}, MyState> {
     }
 
     this.fetchData = this.fetchData.bind(this);
+    this.toggleCard = this.toggleCard.bind(this);
+
   }
 
   componentDidMount() {
@@ -74,6 +76,7 @@ class App extends React.Component<{}, MyState> {
       }
       return card;
     });
+    console.log(`${selectedCard.title}`)
     this.setState({ cards: newCards});
   };
 
