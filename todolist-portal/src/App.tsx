@@ -82,9 +82,9 @@ class App extends React.Component<{}, MyState> {
 
   render() {
     return (
-      <div className="App">
+      <>
         <TodoList cards={this.state.cards} toggleCard={this.toggleCard} />
-      </div>
+      </>
     )
   }
 }
